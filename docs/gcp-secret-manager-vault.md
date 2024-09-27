@@ -43,6 +43,7 @@ The Spring Boot and Quarkus runtime have the starter and the extension related t
 The same configuration could be seen on OCP by following the Camel on OCP Best Practices repository, in particular, the GCP vault section.  You can follow the example for both the runtimes supported by Red Hat Build of Apache Camel: 
 
 [Camel-Quarkus - Camel on OCP Best practices - GCP Vault](https://github.com/oscerd/camel-on-ocp-best-practices/tree/main/vault/gcp/camel-quarkus/retrieval)
+
 [Camel-Spring-Boot - Camel on OCP Best practices - GCP Vault](https://github.com/oscerd/camel-on-ocp-best-practices/tree/main/vault/gcp/camel-spring-boot/retrieval)
 
 ## GCP Secrets Manager Enabling Secret Refresh
@@ -131,4 +132,5 @@ And let’s add the value
 The same configuration could be seen on OCP by following the Camel on OCP Best Practices repository, in particular, the GCP vault section: 
 
 [Camel-Quarkus - Camel on OCP Best practices - GCP Vault with refresh](https://github.com/oscerd/camel-on-ocp-best-practices/tree/main/vault/gcp/camel-quarkus/retrieval-and-refresh)
+
 [Camel-Spring-Boot - Camel on OCP Best practices - GCP Vault with refresh](https://github.com/oscerd/camel-on-ocp-best-practices/tree/main/vault/gcp/camel-spring-boot/retrieval-and-refresh)
