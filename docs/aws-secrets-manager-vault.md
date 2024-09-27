@@ -1,4 +1,5 @@
-## AWS Secrets Manager Secrets Retrieval with Apache Camel On OCP
+
+## AWS Secrets Manager Secrets Retrieval and Refresh with Apache Camel On OCP
 
 First of all all of the following could be supported by simply adding the camel-aws-secrets-manager component to your classpath.
 
@@ -47,3 +48,78 @@ The same configuration could be seen on OCP by following the Camel on OCP Best P
 [Camel-Quarkus - Camel on OCP Best practices - Camel Quarkus - AWS Vault](https://github.com/oscerd/camel-on-ocp-best-practices/tree/main/vault/aws/camel-quarkus/retrieval)
 
 [Camel-Spring-Boot - Camel on OCP Best practices - Camel Spring Boot - AWS Vault](https://github.com/oscerd/camel-on-ocp-best-practices/tree/main/vault/aws/camel-spring-boot/retrieval)
+
+## AWS Secrets Manager Enabling Secret Refresh
+
+In the section above we saw how to set up and use the AWS Secret Manager Secrets retrieval. In this section, we’ll focus on introducing the Secret refresh in the picture. The Camel AWS Secret Manager refresh feature is based on the Cloudtrail entries related to the monitored secret. The reloading task will check for new events in relation to the secret and it will trigger a Camel context reload in case of an update.
+
+The AWS Secrets Refresh function will use the AWS Cloudtrail service to track events related to secret updates in the Cloudtrail trail. There are other ways of tracking changes, but all of them require knowing the secret's name before creating the infrastructure on AWS.
+
+Enabling the Secret refresh feature doesn’t require any particular infrastructure operation. We’ll operate only at Camel level, by adding more properties to the configuration.
+
+The needed additional field for this purpose are:
+
+    camel.vault.aws.refreshEnabled=true
+    camel.vault.aws.refreshPeriod=60000
+    camel.vault.aws.secrets=<secretsName>
+    camel.main.context-reload-enabled = true
+
+Where secretsName is a comma-separated list of secrets names to track and monitor. It’s not mandatory to specify the parameter, Camel will take care of monitoring all the secrets for you. 
+
+This will be enough to automatically refresh the Camel context on a secret value update.
+
+The same configuration could be seen on OCP by following the Camel on OCP Best Practices repository, in particular, the AWS vault section. You can follow the example for both the runtimes supported by Red Hat Build of Apache Camel: 
+
+[Camel-Quarkus - Camel on OCP Best practices - Camel Quarkus - AWS Vault with Refresh](https://github.com/oscerd/camel-on-ocp-best-practices/tree/main/vault/aws/camel-quarkus/retrieval-and-refresh)
+
+[Camel-Spring-Boot - Camel on OCP Best practices - Camel Spring Boot - AWS Vault with Refresh](https://github.com/oscerd/camel-on-ocp-best-practices/tree/main/vault/aws/camel-spring-boot/retrieval-and-refresh)
+
+## AWS Secrets Manager Enabling Secret Refresh with Eventbridge/SQS
+
+The Camel AWS Secret Manager refresh feature is based on the Cloudtrail entries related to the monitored secret. The reloading task will check for new events in relation to the secret and it will trigger a Camel context reload in case of an update. In Camel 4.8.0, we introduced a new way of using the feature by leveraging the AWS Eventbridge service in combination with SQS.
+
+The idea is pretty simple: Eventbridge will filter Cloudtrail events based on rules and for each rule the user is able to set a target. In our case we create an Eventbridge rule for tracking AWS Secrets Manager events.
+
+On the AWS side, the following resources need to be created:
+
+ - an AWS Couldtrail trail 
+ - an AWS SQS Queue 
+ - an Eventbridge rule of the following kind
+
+>     {
+>       "source": ["aws.secretsmanager"],
+>       "detail-type": ["AWS API Call via CloudTrail"],
+>       "detail": {
+>         "eventSource": ["secretsmanager.amazonaws.com"]
+>       }
+>     }
+
+
+User needs to set the a Rule target to the AWS SQS Queue for Eventbridge rule
+
+User needs to give permission to the Eventbrige rule, to write on the above SQS Queue. For doing this you'll need to define a json file like this:
+
+    {
+        "Policy": "{\"Version\":\"2012-10-17\",\"Id\":\"<queue_arn>/SQSDefaultPolicy\",\"Statement\":[{\"Sid\": \"EventsToMyQueue\", \"Effect\": \"Allow\", \"Principal\": {\"Service\": \"events.amazonaws.com\"}, \"Action\": \"sqs:SendMessage\", \"Resource\": \"<queue_arn>\", \"Condition\": {\"ArnEquals\": {\"aws:SourceArn\": \"<eventbridge_rule_arn>\"}}}]}"
+    }
+
+Change the values for queue_arn and eventbridge_rule_arn, save the file with policy.json name and run the following command with AWS CLI
+
+    aws sqs set-queue-attributes --queue-url <queue_url> --attributes file://policy.json
+
+where queue_url is the AWS SQS Queue URL of the just created Queue.
+
+The needed additional fields for this purpose are:
+
+    camel.vault.aws.refreshEnabled=true
+    camel.vault.aws.refreshPeriod=60000
+    camel.vault.aws.secrets=<secretsName>
+    camel.main.context-reload-enabled = true
+    camel.vault.aws.useSqsNotification=true
+    camel.vault.aws.sqsQueueUrl=<queue_url>
+
+Where secretsName is a comma-separated list of secrets names to track and monitor. It’s not mandatory to specify the parameter, Camel will take care of monitoring all the secrets for you. 
+
+This will be enough to automatically refresh the Camel context on a secret value update.
+
+This approach with Eventbridge is probably the most reliable among the solutions we have. Mainly because we are going to search only for Secrets Manager events instead of Cloudtrail full events list.
