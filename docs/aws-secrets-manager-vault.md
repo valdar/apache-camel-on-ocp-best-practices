@@ -70,9 +70,9 @@ This will be enough to automatically refresh the Camel context on a secret value
 
 The same configuration could be seen on OCP by following the Camel on OCP Best Practices repository, in particular, the AWS vault section. You can follow the example for both the runtimes supported by Red Hat Build of Apache Camel: 
 
-[Camel-Quarkus - Camel on OCP Best practices - Camel Quarkus - AWS Vault with Refresh](https://github.com/oscerd/camel-on-ocp-best-practices/tree/main/vault/aws/camel-quarkus/retrieval-and-refresh)
+[Camel-Quarkus - Camel on OCP Best practices - AWS Vault with Refresh](https://github.com/oscerd/camel-on-ocp-best-practices/tree/main/vault/aws/camel-quarkus/retrieval-and-refresh)
 
-[Camel-Spring-Boot - Camel on OCP Best practices - Camel Spring Boot - AWS Vault with Refresh](https://github.com/oscerd/camel-on-ocp-best-practices/tree/main/vault/aws/camel-spring-boot/retrieval-and-refresh)
+[Camel-Spring-Boot - Camel on OCP Best practices - AWS Vault with Refresh](https://github.com/oscerd/camel-on-ocp-best-practices/tree/main/vault/aws/camel-spring-boot/retrieval-and-refresh)
 
 ## AWS Secrets Manager Enabling Secret Refresh with Eventbridge/SQS
 
