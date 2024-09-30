@@ -12,6 +12,7 @@ A list of best practices documents for Apache Camel on OCP
 . xref:aws-secrets-manager-vault.adoc[AWS Secrets Manager]
 . xref:gcp-secret-manager-vault.adoc[GCP Secret Manager]
 . xref:azure-key-vault.adoc[Azure Key Vault]
+. xref:hashicorp-vault.adoc[Hashicorp Vault]
 
 
 
