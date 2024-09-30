@@ -1,4 +1,4 @@
-== Hashicorp Vault Secrets Retrieval and Refresh with Apache Camel On OCP
+== Hashicorp Vault Secrets Retrieval with Apache Camel On OCP
 
 First of all all of the following could be supported by simply adding
 the camel-hashicorp-vault component to your classpath.
