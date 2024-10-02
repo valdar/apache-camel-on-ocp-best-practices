@@ -75,10 +75,10 @@ az keyvault set-policy --name <vaultName> --spn <appId> --secret-permissions get
 You can create a secret through Azure CLI with the following command:
 
 ....
-az keyvault secret set --name authsecdb --vault-name <vaultName> -f secret.json
+az keyvault secret set --name authsecdb --vault-name <vaultName> -f postgresCreds.json
 ....
 
-Where the content of secret.json could be something like:
+Where the content of postgresCreds.json could be something like:
 
 ____
 ....
@@ -108,6 +108,9 @@ of Apache Camel:
 
 https://github.com/oscerd/camel-on-ocp-best-practices/tree/main/vault/azure/camel-quarkus/retrieval[Camel-Quarkus
 - Camel on OCP Best practices - Camel Quarkus - Azure Key Vault]
+
+https://github.com/oscerd/camel-on-ocp-best-practices/tree/main/vault/azure/camel-spring-boot/retrieval[Camel-Spring-Boot
+- Camel on OCP Best practices - Camel Spring Boot - Azure Key Vault]
 
 == Azure Key Vault Enabling Secret Refresh
 
@@ -227,10 +230,10 @@ In the Azure portal, in the key vault we're using, select events and create even
 You can create a secret through Azure CLI with the following command:
 
 ....
-az keyvault secret set --name authsecdb --vault-name <vaultName> -f secret.json
+az keyvault secret set --name authsecdb --vault-name <vaultName> -f postgresCreds.json
 ....
 
-Where the content of secret.json could be something like:
+Where the content of postgresCreds.json could be something like:
 
 ____
 ....
@@ -258,3 +261,6 @@ The same configuration could be seen on OCP by following the Camel on OCP Best P
 
 https://github.com/oscerd/camel-on-ocp-best-practices/tree/main/vault/azure/camel-quarkus/retrieval-and-refresh[Camel-Quarkus
 - Camel on OCP Best practices - Camel Quarkus - Azure Key Vault with Refresh]
+
+https://github.com/oscerd/camel-on-ocp-best-practices/tree/main/vault/azure/camel-spring-boot/retrieval-and-refresh[Camel-Spring-Boot
+- Camel on OCP Best practices - Camel Spring Boot - Azure Key Vault with Refresh]
