@@ -75,10 +75,10 @@ az keyvault set-policy --name <vaultName> --spn <appId> --secret-permissions get
 You can create a secret through Azure CLI with the following command:
 
 ....
-az keyvault secret set --name authsecdb --vault-name <vaultName> -f secret.json
+az keyvault secret set --name authsecdb --vault-name <vaultName> -f postgresCreds.json
 ....
 
-Where the content of secret.json could be something like:
+Where the content of postgresCreds.json could be something like:
 
 ____
 ....
@@ -230,10 +230,10 @@ In the Azure portal, in the key vault we're using, select events and create even
 You can create a secret through Azure CLI with the following command:
 
 ....
-az keyvault secret set --name authsecdb --vault-name <vaultName> -f secret.json
+az keyvault secret set --name authsecdb --vault-name <vaultName> -f postgresCreds.json
 ....
 
-Where the content of secret.json could be something like:
+Where the content of postgresCreds.json could be something like:
 
 ____
 ....
