@@ -109,6 +109,9 @@ of Apache Camel:
 https://github.com/oscerd/camel-on-ocp-best-practices/tree/main/vault/azure/camel-quarkus/retrieval[Camel-Quarkus
 - Camel on OCP Best practices - Camel Quarkus - Azure Key Vault]
 
+https://github.com/oscerd/camel-on-ocp-best-practices/tree/main/vault/azure/camel-spring-boot/retrieval[Camel-Spring-Boot
+- Camel on OCP Best practices - Camel Spring Boot - Azure Key Vault]
+
 == Azure Key Vault Enabling Secret Refresh
 
 In the section above we saw how to set up and use the Azure Key Vault Secrets retrieval. In this section, we’ll focus on introducing the Secret refresh in the picture. The Camel Azure Key Vault refresh feature is based on the relation between a secret and a Event grid subscription topic resource, receiving events from the Eventhub related resource. The reloading task will check for new events in relation to the secret and it will trigger a Camel context reload in case of an update.
@@ -258,3 +261,6 @@ The same configuration could be seen on OCP by following the Camel on OCP Best P
 
 https://github.com/oscerd/camel-on-ocp-best-practices/tree/main/vault/azure/camel-quarkus/retrieval-and-refresh[Camel-Quarkus
 - Camel on OCP Best practices - Camel Quarkus - Azure Key Vault with Refresh]
+
+https://github.com/oscerd/camel-on-ocp-best-practices/tree/main/vault/azure/camel-spring-boot/retrieval-and-refresh[Camel-Spring-Boot
+- Camel on OCP Best practices - Camel Spring Boot - Azure Key Vault with Refresh]
