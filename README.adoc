@@ -14,6 +14,10 @@ A list of best practices documents for Apache Camel on OCP
 . xref:azure-key-vault.adoc[Azure Key Vault]
 . xref:hashicorp-vault.adoc[Hashicorp Vault]
 
+== OCP Configmaps/Secrets
+
+. xref:ocp-secrets.adoc[OCP Secrets]
+
 
 
 
