@@ -17,6 +17,7 @@ A list of best practices documents for Apache Camel on OCP
 == OCP Configmaps/Secrets
 
 . xref:ocp-secrets.adoc[OCP Secrets]
+. xref:ocp-configmaps.adoc[OCP Secrets]
 
 
 
