@@ -1,4 +1,4 @@
-== OCP Secrets Retrieval with Apache Camel Kubernetes Component
+== OCP Configmap Values Retrieval with Apache Camel Kubernetes Component
 
 In Camel we provide the secret function to retrieve configmap values from a configmap resource.
 
