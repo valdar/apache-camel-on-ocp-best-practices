@@ -1,33 +1,35 @@
 name: GitHub Pages Publish
 
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  adoc_build:
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
+    name: Asciidoctoring the docs to pretty HTML!
     steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-    - uses: actions/checkout@v3
-      
-    # Includes the AsciiDoctor GitHub Pages Action to convert adoc files to html and publish to gh-pages branch
-    - name: asciidoctor-ghpages
-      uses: manoelcampos/asciidoctor-ghpages-action@v2
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Get build container
+      id: adocbuild
+      uses: rhpds/asciidoctor-action@master
       with:
-        pdf_build: true
-        # asciidoctor_params: --attribute=nofooter
-        # adoc_file_ext: .ascii # default is .adoc
-        # source_dir: docs/ # default is .
-        # slides_build: true
-        # pre_build:
-        # post_build:
+          program: "asciidoctor -D public/ --backend=html5 docs/*.adoc"
+
+    - name: Rename README.html to index.html
+      run: sudo mv public/README.html public/index.html
+
+    - name: Copy asset folder to public/ dir
+      run: sudo cp -r docs/assets/ public/assets
+
+    - name: Print execution time
+      run: echo "Time ${{ steps.adocbuild.outputs.time }}"
+
+    - name: Deploy docs to ghpages
+      uses: peaceiris/actions-gh-pages@v4
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_branch: gh-pages
+        publish_dir: ./public/
