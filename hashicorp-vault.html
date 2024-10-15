@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.23">
-<title>Hashicorp Vault Secrets Retrieval with Apache Camel On OCP</title>
+<title>Hashicorp Vault - Secrets Retrieval with Apache Camel On OCP</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -433,13 +433,49 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 #footer-text{color:rgba(0,0,0,.6);font-size:.9em}}
 @media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
 </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
-<body class="article">
+<body class="article toc2 toc-left">
 <div id="header">
+<h1>Hashicorp Vault - Secrets Retrieval with Apache Camel On OCP</h1>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_context">1. Context</a></li>
+<li><a href="#_prerequisites">2. Prerequisites</a></li>
+<li><a href="#_goal">3. Goal</a></li>
+<li><a href="#_configuration">4. Configuration</a></li>
+</ul>
+</div>
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_hashicorp_vault_secrets_retrieval_with_apache_camel_on_ocp">Hashicorp Vault Secrets Retrieval with Apache Camel On OCP</h2>
+<h2 id="_context">1. Context</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Secret managers securely store sensitive data like API keys and passwords, preventing hardcoded secrets and reducing exposure risks. They provide encrypted storage, access control, and automated rotation, ensuring secure management of credentials across distributed applications.
+It is crucial, expecially in could environments, to be able to use such services.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_prerequisites">2. Prerequisites</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A camel integrationt o be deployed on <a href="https://www.redhat.com/en/technologies/cloud-computing/openshift"><strong>OpenShift</strong></a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_goal">3. Goal</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Provide a configuration example to retrieve Hashicorp Vault Secrets and use them in a camel integration.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_configuration">4. Configuration</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>First of all all of the following could be supported by simply adding
@@ -500,7 +536,7 @@ of Apache Camel:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-10-14 19:05:28 UTC
+Last updated 2024-10-15 16:39:25 UTC
 </div>
 </div>
 </body>
