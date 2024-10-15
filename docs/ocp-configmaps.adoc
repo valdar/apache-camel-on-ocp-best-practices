@@ -1,4 +1,24 @@
-== OCP Configmap Values Retrieval with Apache Camel Kubernetes Component
+= OCP Configmap Values Retrieval with Apache Camel Kubernetes Component
+:icons: font
+:numbered:
+:title: OCP Configmap Values Retrieval with Apache Camel Kubernetes Component
+:toc: left
+:toclevels: 2
+:source-highlighter: coderay
+
+== Context
+
+Kubernetes ConfigMaps are usually used to store configuration data, such as environment settings, configuration files, or command-line arguments, for use by applications running in a cluster. ConfigMaps allow you to decouple configuration from the application code, making it easier to manage and update configurations without rebuilding or redeploying containers. They can be injected into containers as environment variables, command-line arguments, or mounted as files, or read at runtime.
+
+== Prerequisites 
+
+A camel integrationt o be deployed on https://www.redhat.com/en/technologies/cloud-computing/openshift[**OpenShift**].
+
+== Goal
+
+Provide a configuration example to read kubernetes config maps values in camel applications.
+
+== Configuration
 
 In Camel we provide the secret function to retrieve configmap values from a configmap resource.
 
@@ -20,7 +40,8 @@ The minimum permissions are list and get.
 
 Alternatively, you can create a yaml file with the following content:
 
-....
+[source,yaml]
+----
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -33,7 +54,7 @@ rules:
   verbs:
   - get
   - list
-....
+----
 
 And then run 
 
