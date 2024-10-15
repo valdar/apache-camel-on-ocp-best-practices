@@ -1,5 +1,25 @@
-== Azure Key Vault Secrets Retrieval and Refresh with Apache Camel On OCP
+= Azure Key Vault - Secrets Retrieval and Refresh with Apache Camel On OCP
+:icons: font
+:numbered:
+:title: Azure Key Vault Secrets Retrieval and Refresh with Apache Camel On OCP
+:toc: left
+:toclevels: 2
+:source-highlighter: coderay
 
+== Context
+
+Secret managers securely store sensitive data like API keys and passwords, preventing hardcoded secrets and reducing exposure risks. They provide encrypted storage, access control, and automated rotation, ensuring secure management of credentials across distributed applications.
+It is crucial, expecially in could environments, to be able to use such services.
+
+== Prerequisites 
+
+A camel integrationt o be deployed on https://www.redhat.com/en/technologies/cloud-computing/openshift[**OpenShift**].
+
+== Goal
+
+Provide a configuration example to retrieve Azure Key Vault Secrets and use them in a camel integration.
+
+== Configuration
 First of all all of the following could be supported by simply adding
 the camel-azure-key-vault component to your classpath.
 
@@ -36,15 +56,14 @@ az ad app credential reset --id <appId> --append --display-name 'Description: Ke
 
 This will return a result like this
 
-____
-....
+[source,json]
+----
 {
   "appId": "appId",
   "password": "pwd",
   "tenant": "tenantId"
 }
-....
-____
+----
 
 You should take note of the password and use it as clientSecret parameter in the application.properties file
 
@@ -80,15 +99,14 @@ az keyvault secret set --name authsecdb --vault-name <vaultName> -f postgresCred
 
 Where the content of postgresCreds.json could be something like:
 
-____
-....
+[source,json]
+----
 {
   "username": "postgresadmin",
   "password": "xxxx",
   "host": "host"
 }
-....
-____
+----
 
 
 The secret name will be authsecdb and the secret fields will be username, password and host.
@@ -112,7 +130,7 @@ https://github.com/oscerd/camel-on-ocp-best-practices/tree/main/vault/azure/came
 https://github.com/oscerd/camel-on-ocp-best-practices/tree/main/vault/azure/camel-spring-boot/retrieval[Camel-Spring-Boot
 - Camel on OCP Best practices - Camel Spring Boot - Azure Key Vault]
 
-== Azure Key Vault Enabling Secret Refresh
+== Enabling Secret Refresh
 
 In the section above we saw how to set up and use the Azure Key Vault Secrets retrieval. In this section, we’ll focus on introducing the Secret refresh in the picture. The Camel Azure Key Vault refresh feature is based on the relation between a secret and a Event grid subscription topic resource, receiving events from the Eventhub related resource. The reloading task will check for new events in relation to the secret and it will trigger a Camel context reload in case of an update.
 
@@ -150,13 +168,17 @@ Then we need to obtain credentials
 ....
 az ad app credential reset --id <appId> --append --display-name 'Description: Key Vault app client' --end-date '2024-12-31'
 ....
+
 This will return a result like this
 
+[source,json]
+----
 {
   "appId": "appId",
   "password": "pwd",
   "tenant": "tenantId"
 }
+----
 
 You should take note of the password and use it as clientSecret parameter in the application.properties file
 
@@ -235,15 +257,14 @@ az keyvault secret set --name authsecdb --vault-name <vaultName> -f postgresCred
 
 Where the content of postgresCreds.json could be something like:
 
-____
-....
+[source,json]
+----
 {
   "username": "postgresadmin",
   "password": "xxxx",
   "host": "host"
 }
-....
-____
+----
 
 The secret name will be authsecdb and the secret fields will be username, password and host.
 
@@ -264,3 +285,4 @@ https://github.com/oscerd/camel-on-ocp-best-practices/tree/main/vault/azure/came
 
 https://github.com/oscerd/camel-on-ocp-best-practices/tree/main/vault/azure/camel-spring-boot/retrieval-and-refresh[Camel-Spring-Boot
 - Camel on OCP Best practices - Camel Spring Boot - Azure Key Vault with Refresh]
+

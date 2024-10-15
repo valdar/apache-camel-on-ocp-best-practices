@@ -1,4 +1,25 @@
-== Hashicorp Vault Secrets Retrieval with Apache Camel On OCP
+= Hashicorp Vault - Secrets Retrieval with Apache Camel On OCP
+:icons: font
+:numbered:
+:title: Hashicorp Vault - Secrets Retrieval with Apache Camel On OCP
+:toc: left
+:toclevels: 2
+:source-highlighter: coderay
+
+== Context
+
+Secret managers securely store sensitive data like API keys and passwords, preventing hardcoded secrets and reducing exposure risks. They provide encrypted storage, access control, and automated rotation, ensuring secure management of credentials across distributed applications.
+It is crucial, expecially in could environments, to be able to use such services.
+
+== Prerequisites 
+
+A camel integrationt o be deployed on https://www.redhat.com/en/technologies/cloud-computing/openshift[**OpenShift**].
+
+== Goal
+
+Provide a configuration example to retrieve Hashicorp Vault Secrets and use them in a camel integration.
+
+== Configuration
 
 First of all all of the following could be supported by simply adding
 the camel-hashicorp-vault component to your classpath.
