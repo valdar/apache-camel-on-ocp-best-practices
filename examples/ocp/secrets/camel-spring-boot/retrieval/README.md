@@ -4,10 +4,10 @@ In this sample you'll use the Kubernetes Secret Properties function to run a que
 
 ## Preparing the project
 
-We'll connect to the `camel-sql` project and check the installation status. To change project, open a terminal tab and type the following command:
+We'll connect to the `sb-ocp-secret` project and check the installation status. To change project, open a terminal tab and type the following command:
 
 ```
-oc new-project camel-ocp-secrets
+oc new-project sb-ocp-secret
 ```
 
 ## Setting up Database
@@ -72,7 +72,7 @@ and then do
 oc apply -f secrets.yaml
 ```
 
-Now we need to create the Cluster roles/Service Account and role binding for listing/getting secrets.
+Now we need to create the roles/Service Account and role binding for listing/getting secrets.
 
 You can run the following command:
 
@@ -87,7 +87,7 @@ This complete the Database setup.
 Once the process complete
 
 ```
-./mvnw install -Dquarkus.openshift.deploy=true
+./mvnw clean -DskipTests oc:deploy
 ```
 
 Once everything is complete you should be able to access the logs with the following command:
