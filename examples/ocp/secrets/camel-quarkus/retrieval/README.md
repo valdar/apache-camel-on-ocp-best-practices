@@ -76,12 +76,6 @@ Now we need to create the Cluster roles for listing/getting secrets.
 
 You can run the following command:
 
-```
-oc create clusterrole secretadmin --verb=get --verb=list --resource=secret --namespace=camel-ocp-secrets
-```
-
-or alternatively run
-
 
 ```
 oc apply -f secretpermission.yaml
