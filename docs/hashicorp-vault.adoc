@@ -52,6 +52,8 @@ In the Camel route it will be enough to use the following syntax and the secrets
 {{hashicorp:secret:authsecdb/password}}
 ....
 
+For more information about the usable syntax, you can look at https://camel.apache.org/components/4.8.x/hashicorp-vault-component.html#_using_hashicorp_vault_property_function[Hashicorp Vault Property Function]
+
 The same configuration could be seen on OCP by following the Camel on
 OCP Best Practices repository, in particular, the Hashicorp vault section. You
 can follow the example for both the runtimes supported by Red Hat Build
