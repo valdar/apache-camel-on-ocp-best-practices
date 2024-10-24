@@ -119,6 +119,8 @@ In the Camel route it will be enough to use the following syntax and the secrets
 {{azure:authsecdb/password}}
 ....
 
+For more information about the usable syntax, you can look at https://camel.apache.org/components/4.8.x/azure-key-vault-component.html#_using_azure_key_vault_property_function[Azure Key Vault Property Function]
+
 The same configuration could be seen on OCP by following the Camel on
 OCP Best Practices repository, in particular, the AWS vault section. You
 can follow the example for both the runtimes supported by Red Hat Build
