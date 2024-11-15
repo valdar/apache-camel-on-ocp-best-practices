@@ -1,0 +1,87 @@
+apiVersion: tekton.dev/v1
+kind: Pipeline
+metadata:
+  name: build-and-push-image
+spec:
+  finally:
+    - name: maven
+      params:
+        - name: MAVEN_IMAGE
+          value: 'gcr.io/cloud-builders/mvn:latest'
+        - name: GOALS
+          value:
+            - clean
+            - install
+            - package
+            - '-Dquarkus.container-image.build=true'
+        - name: MAVEN_MIRROR_URL
+          value: ''
+        - name: SERVER_USER
+          value: ''
+        - name: SERVER_PASSWORD
+          value: ''
+        - name: PROXY_USER
+          value: ''
+        - name: PROXY_PASSWORD
+          value: ''
+        - name: PROXY_PORT
+          value: ''
+        - name: PROXY_HOST
+          value: ''
+        - name: PROXY_NON_PROXY_HOSTS
+          value: ''
+        - name: PROXY_PROTOCOL
+          value: http
+        - name: CONTEXT_DIR
+          value: .
+      taskRef:
+        kind: Task
+        name: maven
+      workspaces:
+        - name: source
+          workspace: camel-cicd-app
+        - name: maven-settings
+          workspace: camel-cicd-app
+  tasks:
+    - name: git-clone
+      params:
+        - name: url
+          value: 'https://github.com/valdar/camel-cicd-exampleapp'
+        - name: revision
+          value: main
+        - name: refspec
+          value: ''
+        - name: submodules
+          value: 'true'
+        - name: depth
+          value: '1'
+        - name: sslVerify
+          value: 'true'
+        - name: crtFileName
+          value: ca-bundle.crt
+        - name: subdirectory
+          value: ''
+        - name: sparseCheckoutDirectories
+          value: ''
+        - name: deleteExisting
+          value: 'true'
+        - name: httpProxy
+          value: ''
+        - name: httpsProxy
+          value: ''
+        - name: noProxy
+          value: ''
+        - name: verbose
+          value: 'true'
+        - name: gitInitImage
+          value: 'gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/git-init:v0.40.2'
+        - name: userHome
+          value: /home/git
+      taskRef:
+        kind: Task
+        name: git-clone
+      workspaces:
+        - name: output
+          workspace: camel-cicd-app
+  workspaces:
+    - name: camel-cicd-app
