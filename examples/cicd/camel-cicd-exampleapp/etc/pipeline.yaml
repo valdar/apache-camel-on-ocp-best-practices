@@ -1,52 +1,72 @@
 apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: maven-get-project-version
+spec:
+  workspaces:
+    - name: source
+  params:
+    - name: MAVEN_IMAGE
+      type: string
+      description: Maven base image
+      default: gcr.io/cloud-builders/mvn@sha256:57523fc43394d6d9d2414ee8d1c85ed7a13460cbb268c3cd16d28cfb3859e641
+    - name: CONTEXT_DIR
+      type: string
+      description: >-
+        The context directory within the repository for sources on
+        which we want to execute maven goals.
+      default: "."
+  results:
+    - description: Project version read from pom.xml
+      name: version
+  steps:
+    - name: mvn-command
+      image: $(params.MAVEN_IMAGE)
+      workingDir: $(workspaces.source.path)/$(params.CONTEXT_DIR)
+      script: |
+        #!/usr/bin/env bash
+        VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
+        echo -n $VERSION | tee $(results.version.path)
+---
+apiVersion: tekton.dev/v1
 kind: Pipeline
 metadata:
   name: build-and-push-image
 spec:
   finally:
-    - name: maven
+    - name: buildah
       params:
-        - name: MAVEN_IMAGE
-          value: 'gcr.io/cloud-builders/mvn:latest'
-        - name: GOALS
-          value:
-            - clean
-            - install
-            - package
-            - '-Dquarkus.container-image.build=true'
-        - name: MAVEN_MIRROR_URL
+        - name: IMAGE
+          value: 'image-registry.openshift-image-registry.svc:5000/$(context.taskRun.namespace)/camel-cicd-exampleapp:$(tasks.maven-get-project-version.results.version)'
+        - name: BUILDER_IMAGE
+          value: 'registry.redhat.io/rhel8/buildah@sha256:aac6629389db17e99894c5bee0da01d4c8065d11d8c6f6e1602f9484290baa70'
+        - name: STORAGE_DRIVER
+          value: vfs
+        - name: DOCKERFILE
+          value: ./src/main/docker/Dockerfile.jvm
+        - name: CONTEXT
+          value: ./examples/cicd/camel-cicd-exampleapp/
+        - name: TLSVERIFY
+          value: 'true'
+        - name: FORMAT
+          value: oci
+        - name: BUILD_EXTRA_ARGS
           value: ''
-        - name: SERVER_USER
+        - name: PUSH_EXTRA_ARGS
           value: ''
-        - name: SERVER_PASSWORD
-          value: ''
-        - name: PROXY_USER
-          value: ''
-        - name: PROXY_PASSWORD
-          value: ''
-        - name: PROXY_PORT
-          value: ''
-        - name: PROXY_HOST
-          value: ''
-        - name: PROXY_NON_PROXY_HOSTS
-          value: ''
-        - name: PROXY_PROTOCOL
-          value: http
-        - name: CONTEXT_DIR
-          value: .
+        - name: SKIP_PUSH
+          value: 'false'
       taskRef:
-        kind: Task
-        name: maven
+        kind: ClusterTask
+        name: buildah
       workspaces:
         - name: source
-          workspace: camel-cicd-app
-        - name: maven-settings
           workspace: camel-cicd-app
   tasks:
     - name: git-clone
       params:
         - name: url
-          value: 'https://github.com/valdar/camel-cicd-exampleapp'
+          value: 'https://github.com/jboss-fuse/apache-camel-on-ocp-best-practices.git'
         - name: revision
           value: main
         - name: refspec
@@ -78,10 +98,63 @@ spec:
         - name: userHome
           value: /home/git
       taskRef:
-        kind: Task
+        kind: ClusterTask
         name: git-clone
       workspaces:
         - name: output
+          workspace: camel-cicd-app
+    - name: maven-build
+      params:
+        - name: MAVEN_IMAGE
+          value: 'gcr.io/cloud-builders/mvn:latest'
+        - name: GOALS
+          value:
+            - clean
+            - install
+            - package
+        - name: MAVEN_MIRROR_URL
+          value: ''
+        - name: SERVER_USER
+          value: ''
+        - name: SERVER_PASSWORD
+          value: ''
+        - name: PROXY_USER
+          value: ''
+        - name: PROXY_PASSWORD
+          value: ''
+        - name: PROXY_PORT
+          value: ''
+        - name: PROXY_HOST
+          value: ''
+        - name: PROXY_NON_PROXY_HOSTS
+          value: ''
+        - name: PROXY_PROTOCOL
+          value: http
+        - name: CONTEXT_DIR
+          value: ./examples/cicd/camel-cicd-exampleapp/
+      runAfter:
+        - git-clone
+      taskRef:
+        kind: ClusterTask
+        name: maven
+      workspaces:
+        - name: source
+          workspace: camel-cicd-app
+        - name: maven-settings
+          workspace: camel-cicd-app
+    - name: maven-get-project-version
+      params:
+        - name: MAVEN_IMAGE
+          value: 'gcr.io/cloud-builders/mvn@sha256:57523fc43394d6d9d2414ee8d1c85ed7a13460cbb268c3cd16d28cfb3859e641'
+        - name: CONTEXT_DIR
+          value: ./examples/cicd/camel-cicd-exampleapp/
+      runAfter:
+        - maven-build
+      taskRef:
+        kind: Task
+        name: maven-get-project-version
+      workspaces:
+        - name: source
           workspace: camel-cicd-app
   workspaces:
     - name: camel-cicd-app
