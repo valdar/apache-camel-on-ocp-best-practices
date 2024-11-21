@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: camel-cicd-exampleapp
+spec:
+  destination:
+    name: ''
+    namespace: <the namespace you want the app deployied into>
+    server: https://kubernetes.default.svc
+  source:
+    path: examples/cicd/camel-cicd-gitops/environments/dev
+    repoURL: https://github.com/jboss-fuse/apache-camel-on-ocp-best-practices
+    targetRevision: HEAD
+  sources: []
+  project: default
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated:
+      prune: false
+      selfHeal: false
